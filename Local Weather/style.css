@@ -1,0 +1,70 @@
+ .body {
+	background-color: silver;
+	background: url('http://media1.santabanta.com/full5/outdoors/landscapes/landscapes-134a.jpg') no-repeat center center fixed;
+}
+.container {
+	background-color: rgba(0,136,107,0.7);
+	color: white;
+	position: relative;
+	text-align: left;
+	border: 0;
+	padding: 15px;
+	border-radius: 10px;
+	margin-top: 50px;
+	box-shadow: 0px 0px 15px black;
+}
+
+/*  Main Area */
+.current-icon {
+	font-size: 5em;
+}
+.data-column {
+	text-align: center;
+}
+.current-button, .forecast-button{
+	margin-bottom: 30px;
+}
+.city-search {
+	color: black;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 5px;
+	width: 91%;
+	border: 0px;
+	background-color: rgba(192,192,192,0.0);
+}
+.search {
+	background-color: rgba(192,192,192,0.5);
+	margin-bottom: 5px;
+	border-radius: 15px;
+}
+.fa-search {
+	margin-left: 5px;
+}
+.degrees {
+	font-size: 35px;
+}
+
+/*  Forecast Area */
+.week-row {
+	text-align: center;
+}
+.day-column {
+	border: 1px solid;
+	border-left: none;
+}
+.day-column:last-child {
+	border-right: none;
+}
+.forecast-column {
+	text-align: center;
+	padding-top: 1em;
+	border-right: 1px solid;
+}
+.forecast-column:last-child {
+	border-right: none;
+}
+.forecast-icon {
+	font-size: 4em;
+	padding-bottom: 10px;
+	}
