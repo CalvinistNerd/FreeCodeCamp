@@ -88,6 +88,36 @@ var iconImageMap = {
 
 }
 
+var autoWeatherLoc = "";
+var getWeatherLoc = "";
+var weatherData = "";
+
+function parsed_json();
+
+function getWeatherData() {
+    if (getWeatherLoc != "") {
+        $.ajax({
+            url: apiBaseURL + getWeatherLoc + ".json",
+            datatype: 'json',
+            success: weatherData = parsed_json;
+        })
+    } else {
+        $.ajax({
+            url: apiBaseURL + autoWeatherLoc + ".json",
+            datatype: 'json',
+            success: weatherData = parsed_json;
+        })
+    }
+}
+
+
+function getLocation() {
+
+    navigator.geolocation.getCurrentPosition(data);
+
+    autoWeatherLoc = data.coords.latitude + ',' + data.coords.longitude;
+}
+
 $(document).ready(function () {
 
     if (navigator.geolocation) {
@@ -148,66 +178,33 @@ $(document).ready(function () {
 
                     $(".current-icon").html(`<i class="wi ${iconImageMap[icon].icon}"></i>`);
                     $(".body").css("background", `url(${iconImageMap[icon].bg}) no-repeat center center fixed`);
- 
-                    
-                    
+
                     /* Get 6-Day Forecast */
 
-                    for (var i=0; i < 6; i++) {
+                    for (var i = 0; i < 6; i++) {
                         var day = parsed_json['forecast']['simpleforecast']['forecastday'][i]['date']['weekday_short'];
                         $(".day" + i).html(day);
-                        
-                    }
-                    
-                    day1 = parsed_json['forecast']['simpleforecast']['forecastday'][0]['date']['weekday_short'];
-                    day2 = parsed_json['forecast']['simpleforecast']['forecastday'][1]['date']['weekday_short'];
-                    day3 = parsed_json['forecast']['simpleforecast']['forecastday'][2]['date']['weekday_short'];
-                    day4 = parsed_json['forecast']['simpleforecast']['forecastday'][3]['date']['weekday_short'];
-                    day5 = parsed_json['forecast']['simpleforecast']['forecastday'][4]['date']['weekday_short'];
-                    day6 = parsed_json['forecast']['simpleforecast']['forecastday'][5]['date']['weekday_short'];
 
-                    if (country != 'US') {
-                        day1High = parsed_json['forecast']['simpleforecast']['forecastday'][0]['high']['celsius'];
-                        day2High = parsed_json['forecast']['simpleforecast']['forecastday'][1]['high']['celsius'];
-                        day3High = parsed_json['forecast']['simpleforecast']['forecastday'][2]['high']['celsius'];
-                        day4High = parsed_json['forecast']['simpleforecast']['forecastday'][3]['high']['celsius'];
-                        day5High = parsed_json['forecast']['simpleforecast']['forecastday'][4]['high']['celsius'];
-                        day6High = parsed_json['forecast']['simpleforecast']['forecastday'][5]['high']['celsius'];
-                        day1Low = parsed_json['forecast']['simpleforecast']['forecastday'][0]['low']['celsius'];
-                        day2Low = parsed_json['forecast']['simpleforecast']['forecastday'][1]['low']['celsius'];
-                        day3Low = parsed_json['forecast']['simpleforecast']['forecastday'][2]['low']['celsius'];
-                        day4Low = parsed_json['forecast']['simpleforecast']['forecastday'][3]['low']['celsius'];
-                        day5Low = parsed_json['forecast']['simpleforecast']['forecastday'][4]['low']['celsius'];
-                        day6Low = parsed_json['forecast']['simpleforecast']['forecastday'][5]['low']['celsius'];
-                    } else {
-                        day1High = parsed_json['forecast']['simpleforecast']['forecastday'][0]['high']['fahrenheit'];
-                        day2High = parsed_json['forecast']['simpleforecast']['forecastday'][1]['high']['fahrenheit'];
-                        day3High = parsed_json['forecast']['simpleforecast']['forecastday'][2]['high']['fahrenheit'];
-                        day4High = parsed_json['forecast']['simpleforecast']['forecastday'][3]['high']['fahrenheit'];
-                        day5High = parsed_json['forecast']['simpleforecast']['forecastday'][4]['high']['fahrenheit'];
-                        day6High = parsed_json['forecast']['simpleforecast']['forecastday'][5]['high']['fahrenheit'];
-                        day1Low = parsed_json['forecast']['simpleforecast']['forecastday'][0]['low']['fahrenheit'];
-                        day2Low = parsed_json['forecast']['simpleforecast']['forecastday'][1]['low']['fahrenheit'];
-                        day3Low = parsed_json['forecast']['simpleforecast']['forecastday'][2]['low']['fahrenheit'];
-                        day4Low = parsed_json['forecast']['simpleforecast']['forecastday'][3]['low']['fahrenheit'];
-                        day5Low = parsed_json['forecast']['simpleforecast']['forecastday'][4]['low']['fahrenheit'];
-                        day6Low = parsed_json['forecast']['simpleforecast']['forecastday'][5]['low']['fahrenheit'];
                     }
 
-                    
-                    $(".day-1-temp").html(day1High + "<i class='wi wi-degrees'></i> | " + day1Low + "<i class='wi wi-degrees'></i>");
-                    $(".day-2-temp").html(day2High + "<i class='wi wi-degrees'></i> | " + day2Low + "<i class='wi wi-degrees'></i>");
-                    $(".day-3-temp").html(day3High + "<i class='wi wi-degrees'></i> | " + day3Low + "<i class='wi wi-degrees'></i>");
-                    $(".day-4-temp").html(day4High + "<i class='wi wi-degrees'></i> | " + day4Low + "<i class='wi wi-degrees'></i>");
-                    $(".day-5-temp").html(day5High + "<i class='wi wi-degrees'></i> | " + day5Low + "<i class='wi wi-degrees'></i>");
-                    $(".day-6-temp").html(day6High + "<i class='wi wi-degrees'></i> | " + day6Low + "<i class='wi wi-degrees'></i>");
+                    for (var i = 0; i < 6; i++) {
+                        if (country != 'US') {
+                            dayHigh = parsed_json['forecast']['simpleforecast']['forecastday'][i]['high']['celsius'];
+                            dayLow = parsed_json['forecast']['simpleforecast']['forecastday'][i]['low']['celsius'];
+                        } else {
+                            dayHigh = parsed_json['forecast']['simpleforecast']['forecastday'][i]['high']['fahrenheit'];
+                            dayLow = parsed_json['forecast']['simpleforecast']['forecastday'][i]['low']['fahrenheit'];
+                        }
+
+                        $(".day-" + i + "-temp").html(dayHigh + "<i class='wi wi-degrees'></i> | " + dayLow + "<i class='wi wi-degrees'></i>");
+                    }
 
                     for (var i = 0; i < 6; i++) {
                         var dayCond = parsed_json['forecast']['simpleforecast']['forecastday'][i]['conditions']
                         $(".day-" + i + "-cond").html(dayCond);
                     }
-                    
-                    
+
+
                     /* Change Forecast Icon */
 
                     for (var i = 0; i < 6; i++) {
